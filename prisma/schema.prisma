@@ -12,3 +12,22 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String  @unique
+  password String  @default("password")
+  Events   Event[]
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  when        DateTime
+  image       String?  @default("https://i.pinimg.com/564x/0d/5a/9c/0d5a9c0eab98394f8a87b7dbd53b7351.jpg")
+  userId      Int
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+}
